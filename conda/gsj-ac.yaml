@@ -6,6 +6,6 @@ channels:
 
 dependencies:
   - python=3.11
-  - numpy
+  # - numpy
   - pandas
-  - pytorch-lightning
+  # - pytorch-lightning
