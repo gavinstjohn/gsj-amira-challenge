@@ -27,7 +27,14 @@ def main():
 
     # data cleaning-
     # drop rows with missing asr data
+    asr_nulls = asr_df[asr_df.isnull().any(axis=1)]
+    breakpoint()
     asr_df = asr_df.dropna(how="any", axis=0)
+
+    # drop corresponding rows in labels_df
+
+    # rename phrase_index to phraseIndex for consistency
+    asr_df = asr_df.rename(columns={"phrase_index": "phraseIndex"})
 
     # init dataset
     dataset = {}
@@ -64,16 +71,15 @@ def main():
         activityId = dataset[dataset_id]["metadata"]["activityId"]
         phraseIndex = dataset[dataset_id]["metadata"]["phraseIndex"]
 
-        # asr_data is missing the following activityId,phraseIndex pairs.
-        # 98D5EDA1373C11EC89641635D148,4 entirely and
-        # 98D5EDA1373C11EC89641635D148,(0,1,2,3) for all translations but amazon
-        # bypass this entire activityId
-        if activityId == "98D5EDA1373C11EC89641635D148":
-            del dataset[dataset_id]
-            continue
-
         # query the relevant asr dataframe row
-        current_asr_row = asr_df[asr_df["activityId"] == activityId].iloc[phraseIndex]
+        current_asr_activity = asr_df[asr_df["activityId"] == activityId]
+        current_asr_row = current_asr_activity[
+            current_asr_activity["phraseIndex"] == phraseIndex
+        ]
+        try:
+            current_asr_row = current_asr_row.iloc[0]
+        except:
+            breakpoint()
 
         # process story text
         story_text = current_asr_row["story_text"]
