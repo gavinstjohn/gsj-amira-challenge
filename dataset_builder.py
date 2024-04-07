@@ -10,6 +10,9 @@ import string
 # for timing
 from time import perf_counter
 
+# for saving dataset
+import pickle
+
 
 def main():
     start_time = perf_counter()
@@ -21,12 +24,10 @@ def main():
     # grab asr_data.csv
     asr_path = "./data/asr_data.csv"
     asr_df = pd.read_csv(asr_path)
-    print("asr_preprocessed_length: ", len(asr_df))
 
     # data cleaning-
     # drop rows with missing asr data
     asr_df = asr_df.dropna(how="any", axis=0)
-    print("asr_processed_length: ", len(asr_df))
 
     # init dataset
     dataset = {}
@@ -135,6 +136,10 @@ def main():
     print(len(dataset))
     print(perf_counter() - start_time)
     breakpoint()
+
+    # save dataset dict as pickle
+    with open("./dataset/gsj_ac_dataset.pickle", "wb") as file:
+        pickle.dump(dataset, file)
 
 
 if __name__ == "__main__":
