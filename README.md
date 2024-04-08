@@ -4,6 +4,7 @@
 ### Requirements
 
 - Python 3
+- pandas
 - Environment Manager
   - Mamba (preferred)
   - Conda
