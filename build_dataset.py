@@ -82,7 +82,10 @@ def build_dataset(dataset_path: str = "./dataset/gsj_ac_dataset.pickle"):
                 "word": current_row["expected_text"],
                 "phoneme": phonemize([current_row["expected_text"]], phoneme_map)[0],
             },
-            "label": current_row["label"],
+            "label": {
+                "word": current_row["label"],
+                "phrase": [],
+            },
             "metadata": {
                 "activityId": current_row["activityId"],
                 "storyId": current_row["storyId"],
@@ -102,6 +105,23 @@ def build_dataset(dataset_path: str = "./dataset/gsj_ac_dataset.pickle"):
         # grab current metadata from above, used to query asr dataframe
         activityId = dataset[dataset_id]["metadata"]["activityId"]
         phraseIndex = dataset[dataset_id]["metadata"]["phraseIndex"]
+
+        # collect subset of labels matching current activityId
+        activityId_subset = labels_df[labels_df["activityId"] == activityId]
+        # cut down to labels matching current phraseIndex
+        phraseIndex_subset = activityId_subset[
+            activityId_subset["phraseIndex"] == phraseIndex
+        ]
+        # convert to list
+        phrase_label = phraseIndex_subset["label"].tolist()
+
+        # data-cleaning: if entire phrase is mispronounced discard
+        if all([v == 0 for v in phrase_label]):
+            del dataset[dataset_id]
+            continue
+        else:
+            # assign to dataset
+            dataset[dataset_id]["label"]["phrase"] = phrase_label
 
         # query the relevant asr dataframe row
         current_asr_activity = asr_df[asr_df["activityId"] == activityId]
@@ -278,6 +298,7 @@ def tokenize(text) -> list[str]:
 
 def main():
     build_dataset()
+    breakpoint()
 
 
 if __name__ == "__main__":
