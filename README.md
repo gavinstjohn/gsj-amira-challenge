@@ -42,11 +42,11 @@ I built a clean, flexible, and robust dataset for central usage by a potential m
 ### Build the dataset
 Execute python script from root:
 ```bash
-python dataset_builder.py
+python build_dataset.py
 ```
 This will result in a pickled python dictionary located at ```./dataset/gsj_ac_dataset.pickle```
 
 ### Browse the dataset
-You can view and manipulate the dataset with accompanying documentation using the notebook ```dataset_browser.ipynb```
+You can view and manipulate the dataset with accompanying documentation using the notebook ```browse_dataset.ipynb```
 
 ## 
