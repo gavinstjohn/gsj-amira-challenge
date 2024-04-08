@@ -298,7 +298,6 @@ def tokenize(text) -> list[str]:
 
 def main():
     build_dataset()
-    breakpoint()
 
 
 if __name__ == "__main__":
