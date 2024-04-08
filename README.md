@@ -17,7 +17,6 @@ Place ```labels.csv```, ```asr_data.csv```, ```arpabet_to_amirabet.json```, and 
 
 
 ### Environment
-Note: Personally I prefer mamba and that is the package/environment manager I used. However, you shouldn't have any issues using conda. 
 
 From the root directory (```/gsj-amira-challenge/```) 
 
@@ -49,4 +48,5 @@ This will result in a pickled python dictionary located at ```./dataset/gsj_ac_d
 ### Browse the dataset
 You can view and manipulate the dataset with accompanying documentation using the notebook ```browse_dataset.ipynb```
 
-## 
+## Writeup / Ruminations
+
